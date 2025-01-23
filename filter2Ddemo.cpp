@@ -9,10 +9,10 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  // ç”»åƒã®èª­ã¿è¾¼ã¿
+  // ‰æ‘œ‚Ì“Ç‚İ‚İ
   cv::Mat img = cv::imread(argv[1], cv::IMREAD_ANYCOLOR);
 
-  if (img.empty()) {  // ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã®å‡¦ç†
+  if (img.empty()) {  // ‰æ‘œƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ìˆ—
     printf("Input image is not found.\n");
     return EXIT_FAILURE;
   }
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
   const int xsize = 3;
   const int ysize = 3;
-  float c[9] = {-1, -1, -1, -1, 9, -1, -1, -1, -1};
+  float c[9] = {-1, -1, -1, -1, 9, -1, -1, -1, -1};  // ƒƒ‚ƒŠ‚ÌŠm•Û
   auto coeff = std::make_unique<float[]>(xsize * ysize);
   for (int i = 0; i < xsize * ysize; ++i) {
     coeff[i] = c[i];
@@ -31,16 +31,16 @@ int main(int argc, char *argv[]) {
 
   cv::filter2D(img, dst, CV_8U, filter, cv::Point(-1, -1), 0.0, type);
 
-  // ç”»åƒã®è¡¨ç¤º
+  // ‰æ‘œ‚Ì•\¦
   cv::imshow("original", img);
   cv::imshow("extended", dst);
 
-  // ã‚­ãƒ¼å…¥åŠ›ã‚’å¾…ã¤
+  // ƒL[“ü—Í‚ğ‘Ò‚Â
   cv::waitKey();
-  // å…¨ã¦ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ç ´æ£„
+  // ‘S‚Ä‚ÌƒEƒBƒ“ƒhƒE‚ğ”jŠü
   cv::destroyAllWindows();
 
-  // delete[] coeff;  // ãƒ¡ãƒ¢ãƒªã®è§£æ”¾, unique_ptrã®å ´åˆä¸è¦
+  // delete[] coeff;  // ƒƒ‚ƒŠ‚ÌŠJ•úAunique_ptr‚Ìê‡•s—v
 
   return EXIT_SUCCESS;
 }

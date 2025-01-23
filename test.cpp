@@ -1,3 +1,5 @@
+#include <cmath>
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <opencv2/opencv.hpp>
@@ -8,18 +10,75 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  // ç”»åƒã®èª­ã¿è¾¼ã¿
+  // ‰æ‘œ‚Ì“Ç‚İ‚İ
   cv::Mat img = cv::imread(argv[1], cv::IMREAD_ANYCOLOR);
-  if (img.empty()) {  // ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã®å‡¦ç†
+  if (img.empty()) {  // ‰æ‘œƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ìˆ—
     printf("Input image is not found.\n");
     return EXIT_FAILURE;
   }
 
-  // ç”»åƒã®è¡¨ç¤º
+  // for (int y = 0; y < 1; y++) {
+  // for (int x = 0; x < 4; x++) {
+  // int idx = y * img.cols + x;
+  //   printf("%3d", img.data[idx]);
+  //}
+  //}
+  // printf("\n");
+
+  auto clip = [](int v) {
+    // 0-255‚Ì”ÍˆÍ‚É‰æ‘f’l‚ğû‚ß‚é‚½‚ß‚ÌƒNƒŠƒbƒsƒ“ƒOˆ—‚ğs‚¤ƒ‰ƒ€ƒ_®
+    if (v > 255) {
+      v = 255;
+    }
+    if (v < 0) {
+      v = 0;
+    }
+    return v;
+  };
+
+  auto gamma_correction = [](int v, double gamma) {
+    // ƒKƒ“ƒ}•â³‚ğs‚¤ƒ‰ƒ€ƒ_®
+    double in = static_cast<double>(v) / 255.0;
+    double out = pow(in, gamma) * 255.0;
+    return static_cast<int>(out);
+  };
+
+  auto quantization = [](int v, double delta) {
+    double x = static_cast<double>(v);
+    double Qx = floor(x / delta + 0.5);
+    return Qx;
+  };
+
+  auto dequantization = [](int v, double delta) {
+    double rec = v * delta;
+    return static_cast<int>(rec);
+  };
+
+  const int W = img.cols;
+  const int H = img.rows;
+  uint8_t *pixels = img.data;
+  const double delta = 30.0;
+  // Stride access
+  for (int Y = 0; Y < H; ++Y) {
+    for (int X = 0; X < W; ++X) {
+      // ƒXƒgƒ‰ƒCƒgƒAƒNƒZƒX‚É‚æ‚éƒƒ‚ƒŠã‚ÌƒAƒhƒŒƒX‚ÌŒvZ
+      int idx = Y * W + X;
+      // ‰æ‘f’l‚Ìæ“¾
+      int val = pixels[idx];
+      // ˆ—
+      val = dequantization(quantization(val, delta), delta);
+
+      // ˆ—Œ‹‰Ê‚Ì‰æ‘f’l‚ğƒƒ‚ƒŠ‚É‘‚«‚Ş
+      pixels[idx] = clip(val);
+    }
+  }
+  // printf("\n");
+
+  // ‰æ‘œ‚Ì•\¦
   cv::imshow("window", img);
-  // ã‚­ãƒ¼å…¥åŠ›ã‚’å¾…ã¤
+  // ƒL[“ü—Í‚ğ‘Ò‚Â
   cv::waitKey();
-  // å…¨ã¦ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ç ´æ£„
+  // ‘S‚Ä‚ÌƒEƒBƒ“ƒhƒE‚ğ”jŠü
   cv::destroyAllWindows();
 
   return EXIT_SUCCESS;

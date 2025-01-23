@@ -14,9 +14,9 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  // 画像の読み込み
+  // �摜�̓ǂݍ���
   cv::Mat img = cv::imread(argv[1], cv::IMREAD_ANYCOLOR);
-  if (img.empty()) {  // 画像ファイルが見つからない場合の処理
+  if (img.empty()) {  // �摜�t�@�C����������Ȃ��ꍇ�̏���
     printf("Input image is not found.\n");
     return EXIT_FAILURE;
   }
@@ -29,15 +29,15 @@ int main(int argc, char *argv[]) {
   cv::Mat img2 = img.clone();
 
   myBGR2YCbCr(img, YCbCr);
-  quantize(YCbCr, 10.0);
+  quantize(YCbCr, 32.0);
   myYCbCr2BGR(YCbCr, img2);
 
-  // 画像の表示
+  // �摜�̕\��
   cv::imshow("RGB", img);
   cv::imshow("YCbCr->RGB", img2);
-  // キー入力を待つ
+  // �L�[���͂�҂�
   cv::waitKey();
-  // 全てのウインドウを破棄
+  // �S�ẴE�B���h�E��j��
   cv::destroyAllWindows();
 
   return EXIT_SUCCESS;

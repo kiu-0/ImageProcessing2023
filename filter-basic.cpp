@@ -8,9 +8,9 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  // ç”»åƒã®èª­ã¿è¾¼ã¿
+  // ‰æ‘œ‚Ì“Ç‚İ‚İ
   cv::Mat img = cv::imread(argv[1], cv::IMREAD_ANYCOLOR);
-  if (img.empty()) {  // ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã®å‡¦ç†
+  if (img.empty()) {  // ‰æ‘œƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ìˆ—
     printf("Input image is not found.\n");
     return EXIT_FAILURE;
   }
@@ -29,9 +29,9 @@ int main(int argc, char *argv[]) {
 
   // clang-format off
   float filter[9] = {
-    0, -1, 0,
-    -1,  5, -1,
-    0, -1, 0
+    -1, -1, -1,
+    -1,  8, -1,
+    -1, -1, -1
   };
   // clang-format on
 
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
       int idx = y * W + x;
       uint8_t *in_local = &in[idx];
       float val = filter3x3(in_local, W, filter, N2);
-      //   val /= N * N;
+      // val /= N * N;
       if (val < 0.0F) {
         val = 0.0F;
       }
@@ -65,12 +65,12 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  // ç”»åƒã®è¡¨ç¤º
+  // ‰æ‘œ‚Ì•\¦
   cv::imshow("Original", img);
   cv::imshow("Filtered", img_out);
-  // ã‚­ãƒ¼å…¥åŠ›ã‚’å¾…ã¤
+  // ƒL[“ü—Í‚ğ‘Ò‚Â
   cv::waitKey();
-  // å…¨ã¦ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ç ´æ£„
+  // ‘S‚Ä‚ÌƒEƒBƒ“ƒhƒE‚ğ”jŠü
   cv::destroyAllWindows();
 
   return EXIT_SUCCESS;

@@ -8,10 +8,10 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  // ç”»åƒã®èª­ã¿è¾¼ã¿
+  // ‰æ‘œ‚Ì“Ç‚İ‚İ
   cv::Mat img = cv::imread(argv[1], cv::IMREAD_ANYCOLOR);
 
-  if (img.empty()) {  // ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã®å‡¦ç†
+  if (img.empty()) {  // ‰æ‘œƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ìˆ—
     printf("Input image is not found.\n");
     return EXIT_FAILURE;
   }
@@ -25,13 +25,13 @@ int main(int argc, char *argv[]) {
   int type = cv::BORDER_REPLICATE;
   cv::copyMakeBorder(img, dst, top, bottom, left, right, type);
 
-  // ç”»åƒã®è¡¨ç¤º
+  // ‰æ‘œ‚Ì•\¦
   cv::imshow("original", img);
   cv::imshow("extended", dst);
 
-  // ã‚­ãƒ¼å…¥åŠ›ã‚’å¾…ã¤
+  // ƒL[“ü—Í‚ğ‘Ò‚Â
   cv::waitKey();
-  // å…¨ã¦ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ç ´æ£„
+  // ‘S‚Ä‚ÌƒEƒBƒ“ƒhƒE‚ğ”jŠü
   cv::destroyAllWindows();
 
   return EXIT_SUCCESS;
